@@ -3,7 +3,6 @@ from tkinter import *
 tk = Tk()
 tk.title('โปรแกรมหารจ่าย')
 # กำหนดขนาดและตำแหน่งหน้าต่าง GUI ให้อยู่ตรงกลางจอ
-tk.update_idletasks()
 width = (tk.winfo_screenwidth()//2)
 height = (tk.winfo_screenheight()//2)
 x = (tk.winfo_screenwidth()//4)
@@ -22,14 +21,21 @@ A1.pack()
 E2.pack()
 A2.pack()
 
+ResultF = Frame(tk)
+Result = Label(ResultF,text='',font=('TH Sarabun New',20,'bold'),fg='green')
+Result.pack()
+
 def showResult():
-    A1 = str(A1.get())
-    A2 = str(A2.get())
+    A = int(A1.get())
+    B = int(A2.get())
+    C = int(A/B)
+    Result.config(text=(f'ค่าอาหารทั้งหมด {A} บาท \n จำนวนคนหาร {B} คน \n จ่ายเฉลี่ยคนละ {C} บาท'))
 
 Submit1 = Button(Question,text='คำนวณ',font=('TH Sarabun New',20),command=showResult)
 Submit1.pack(pady=10)
 
 Head.pack(padx=10,pady=10)
 Question.pack()
+ResultF.pack()
 
 tk.mainloop()
