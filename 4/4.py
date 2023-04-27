@@ -3,7 +3,7 @@ from tkinter import ttk
 import csv
 import datetime
 
-#
+
 def validate_entry(text):
     if len(text) <=18:
         return True
@@ -27,11 +27,31 @@ def saveCSV():
     with open('data.csv','a',newline='',encoding='UTF8') as csvfile:
         writer = csv.writer(csvfile)
         writer.writerow(data)
+
+def readCSV():
+    with open('data.csv','r',newline='',encoding='UTF8') as Ocsvfile:
+        reader = csv.reader(Ocsvfile)
+        data2 = []
+        for row in reader:
+            data2.append(row)
+    return data2
+
+def fillTable(treeview,data2):
+    treeview.delete(*treeview.get_children())
+    for row in data2:
+        treeview.insert('',END,values=row)
+
+
         
 
 root = Tk()
 
 #
+tabs = ttk.Notebook(root)
+tabs.pack(ipadx=10,ipady=20)
+
+
+###EP3
 root.title('บันทึกค่าใช้จ่าย')
 root.config(bg='white')
 
@@ -56,7 +76,7 @@ I1 = PhotoImage(file='3\LogoCat.png')
 I1 = I1.subsample(4)
 
 #
-F1 = ttk.Frame(root)
+F1 = ttk.Frame(tabs)
 
 #
 IL1 = Label(F1,image=I1,bg="white",)
@@ -81,5 +101,32 @@ S1.grid(row=3,column=1,pady=5)
 
 #
 F1.pack(padx=0,pady=10)
+##EP3
+
+#EP4
+F2 = ttk.Frame(tabs)
+
+#
+treeview = ttk.Treeview(F2,column=('รายการ','ค่าใช้จ่าย','เวลาทำรายการ'),show='headings',height=2)
+treeview.heading('รายการ',text='รายการ')
+treeview.heading('ค่าใช้จ่าย',text='ค่าใช้จ่าย')
+treeview.heading('เวลาทำรายการ',text='เวลาทำรายการ')
+
+treeview.column('รายการ',minwidth=0,width=180,stretch=NO)
+treeview.column('ค่าใช้จ่าย',minwidth=0,width=120,stretch=NO)
+treeview.column('เวลาทำรายการ',minwidth=0,width=160,stretch=NO)
+treeview.pack()
+
+#
+data2 = readCSV()
+fillTable(treeview, data2)
+
+#
+F2.pack(padx=0,pady=10)
+
+#
+tabs.add(F1,text='บันทึกข้อมูล')
+tabs.add(F2,text='รายงาน')
+##EP4
 
 root.mainloop()
